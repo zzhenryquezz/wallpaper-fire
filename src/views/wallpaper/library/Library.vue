@@ -6,9 +6,11 @@
                 v-for="wallpaper in state.wallpapers">
                 <v-slide-x-transition :key="`transition-${wallpaper.id}`">
                     <v-col
-                        cols="3"
-                        md="3"
-                        lg="2"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="3"
+                        xl="2"
                         :key="wallpaper.id">
                         <v-skeleton-loader
                             v-show="state.loading"
