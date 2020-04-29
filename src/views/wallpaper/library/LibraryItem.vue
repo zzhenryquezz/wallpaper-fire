@@ -1,57 +1,63 @@
 <template>
     <div v-if="wallpaper">
-        <v-tooltip nudge-bottom="120%" top max-width="400px">
-            <template v-slot:activator="{ on }">
-                <v-card
-                    v-on="on"
-                    link
+        <v-card
+            link
+            v-ripple='false'
+            class="library-item-card">
+            <v-hover v-if='wallpaper.thumb' v-slot:default="{ hover }">
+                <v-img
+                    class="white--text align-end library-item-thumb"
+                    height="200px"
+                    :src="wallpaper.thumb"
                     @click="$emit('click')"
-                    class="library-item-card"
                     @contextmenu="showMenu"
                 >
-                    <v-img
-                        v-if='wallpaper.thumb'
-                        class="white--text align-end library-item-thumb"
-                        height="200px"
-                        :src="wallpaper.thumb"
+                    <v-expand-transition>
+                        <div
+                            v-if="hover"
+                            class="transition-fast-in-fast-out text-center white--text py-4"
+                            style="height: 30%;background-color:rgba(33,33,33,0.4)"
+                        >
+                            <v-btn
+                                @click.stop="useWallpaper"
+                                color="success" dark small>use wallpaper</v-btn>
+                        </div>
+                    </v-expand-transition>
+                </v-img>
+            </v-hover>
+            <v-img
+                v-else
+                class="white--text align-end library-item-thumb-default"
+                height="200px"
+                contain
+                :src="state.defaultImage"
+            >
+            </v-img>
+            <v-menu
+                v-model="state.menu.show"
+                absolute
+                offset-y
+                :position-x="state.menu.x"
+                :position-y="state.menu.y"
+                min-width="300px"
+                max-width="700px"
+            >
+                <v-list class="py-0">
+                    <v-list-item
+                        v-for="(option, index) in state.options"
+                        :key="index"
+                        @click="option.function"
+                        :class="[option.color ? option.color : '', option.class]"
+                        :dark="option.dark"
                     >
-                    </v-img>
-                    <v-img
-                        v-else
-                        class="white--text align-end library-item-thumb-default"
-                        height="200px"
-                        contain
-                        :src="state.defaultImage"
-                    >
-                    </v-img>
-                    <v-menu
-                        v-model="state.menu.show"
-                        absolute
-                        offset-y
-                        :position-x="state.menu.x"
-                        :position-y="state.menu.y"
-                        min-width="300px"
-                        max-width="700px"
-                    >
-                        <v-list class="py-0">
-                            <v-list-item
-                                v-for="(option, index) in state.options"
-                                :key="index"
-                                @click="option.function"
-                                :class="[option.color ? option.color : '', option.class]"
-                                :dark="option.dark"
-                            >
-                                <v-list-item-content>
-                                    {{option.text}}
-                                </v-list-item-content>
+                        <v-list-item-content>
+                            {{option.text}}
+                        </v-list-item-content>
 
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-card>
-            </template>
-            <p class="caption ma-0">{{wallpaper.title}}</p>
-        </v-tooltip>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-card>
     </div>
     <v-card v-else>
         <v-card-text class="text-center yellow--text text--darken-1">
