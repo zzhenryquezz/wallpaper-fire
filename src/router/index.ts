@@ -15,23 +15,14 @@ const routes = [
         component: () => import("./../views/settings/index.vue")
     },
     {
-        path: "/wallpaper",
-        name: "wallpaper",
-        redirect: "/wallpaper/all",
-        component: () => import("./../views/wallpaper/index.vue"),
-        children: [
-            {
-                path: "all",
-                name: "library",
-                component: () => import("./../views/wallpaper/library/Library.vue")
-            },
-            {
-                path: "playlist",
-                name: "wallpaper-playlist",
-                component: () => import("./../views/wallpaper/WallpaperPlaylist.vue")
-            }
-
-        ]
+        path: "/library",
+        name: "library",
+        component: () => import("./../views/wallpaper/library/Library.vue")
+    },
+    {
+        path: "/playlist",
+        name: "playlist",
+        component: () => import("./../views/wallpaper/WallpaperPlaylist.vue")
     }
 ];
 

@@ -3,21 +3,14 @@
         app
         permanent
         :mini-variant="state.mini"
-        v-bind="$attrs">
-        <v-list>
+        v-bind="$attrs"
+    >
+        <v-list class="pt-0">
 
-            <v-list-item>
-                <v-list-item-action>
-                    <v-btn color="red" icon>
-                        <v-icon
-                            @click="state.mini = !state.mini"
-                            large>mdi-fire</v-icon>
-                    </v-btn>
-                </v-list-item-action>
-
-                <v-list-item-content>
-                    <v-list-item-title>Wallpaper Fire</v-list-item-title>
-                </v-list-item-content>
+            <v-list-item  @click="state.mini = !state.mini">
+                <v-icon>
+                    mdi-menu
+                </v-icon>
             </v-list-item>
 
             <v-divider />
@@ -49,8 +42,13 @@ export default defineComponent({
             menuItems: [
                 {
                     title: "Wallpapers",
+                    icon: "mdi-image",
+                    to: { name: "library" }
+                },
+                {
+                    title: "Playlist",
                     icon: "mdi-image-multiple",
-                    to: { name: "wallpaper" }
+                    to: { name: "playlist" }
                 },
                 {
                     title: "Settings",
