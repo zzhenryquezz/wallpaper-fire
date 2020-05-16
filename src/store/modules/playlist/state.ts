@@ -10,10 +10,12 @@ export type PlayList = {
 };
 export type PlayListState = {
     timer: any | null;
+    currentPlaylistId: null | string;
 };
 
 const state: PlayListState = {
-    timer: null
+    timer: null,
+    currentPlaylistId: null
 };
 
 export default state;

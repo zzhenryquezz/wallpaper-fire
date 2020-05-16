@@ -21,7 +21,7 @@ const getters: GetterTree<WallpaperState, RootState> = {
         // // return the list of wallpapers filered
         return wallpapers;
     },
-    findById: (state, getters, rootState, rootGetters) => (id: number): Wallpaper => {
+    getById: (state, getters, rootState, rootGetters) => (id: number): Wallpaper => {
         // // get the db
         const db = rootGetters["db/get"];
         // // look for the wallpapers
@@ -30,6 +30,12 @@ const getters: GetterTree<WallpaperState, RootState> = {
             .value();
         // // return the list of wallpapers filered
         return wallpapers;
+    },
+    getCurrenWallpaper: (state, getters) => {
+        if (!state.currentWallpaperId) {
+            return null;
+        }
+        return getters.getById(state.currentWallpaperId);
     }
 };
 

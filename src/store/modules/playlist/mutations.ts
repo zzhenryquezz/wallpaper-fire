@@ -8,6 +8,9 @@ const mutations: MutationTree<PlayListState> = {
     CLEAR_TIMER (state) {
         clearInterval(state.timer);
         state.timer = null;
+    },
+    SET_CURRENT_PLAYLIST_ID (state, playlistId) {
+        state.currentPlaylistId = playlistId;
     }
 };
 export default mutations;

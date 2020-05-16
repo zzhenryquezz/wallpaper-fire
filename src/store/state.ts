@@ -3,6 +3,7 @@ const { remote, shell } = window.require("electron");
 
 const state: RootState = {
     notifications: [],
+    loading: false,
     user: {
         notifications: []
     },
@@ -11,10 +12,6 @@ const state: RootState = {
         dataPath: remote.app.getPath("userData"),
         thumbsPath: `${remote.app.getPath("userData")}/thumbnails`,
         window: {}
-    },
-    history: {
-        lastWallpaperId: null,
-        lastPlaylistId: null
     },
     openExternalLink: (link: string) => {
         if (!link) {

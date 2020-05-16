@@ -8,7 +8,7 @@ const getters: GetterTree<PlayListState, RootState> = {
         const playlist = db.get("playlist.all").value();
         return playlist;
     },
-    findById: (state, getters, rootState, rootGetters) => (id: number): PlayList => {
+    getById: (state, getters, rootState, rootGetters) => (id: number): PlayList => {
         // // get the db
         const db = rootGetters["db/get"];
         // // look for the playlist

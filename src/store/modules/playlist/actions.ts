@@ -3,12 +3,7 @@ import { RootState } from "@/store";
 import { PlayList, PlayListState } from "./state";
 
 const actions: ActionTree<PlayListState, RootState> = {
-    /**
-     * Get by id method
-     * @param store
-     * @param id
-     * ==================================================
-     */
+
     async getById ({ rootGetters }, id: number) {
         // get the db
         const db = rootGetters["db/get"];
@@ -17,12 +12,7 @@ const actions: ActionTree<PlayListState, RootState> = {
 
         return playlist;
     },
-    /**
-     * Create method
-     * @param store
-     * @param playlist
-     * ==================================================
-     */
+
     async create ({ rootGetters, dispatch }, playlist: PlayList) {
         // get the db
         const db = rootGetters["db/get"];
@@ -33,26 +23,12 @@ const actions: ActionTree<PlayListState, RootState> = {
 
         return playlist;
     },
-    /**
-     * Update method
-     * @param store
-     * @param data: { playlist, id }
-     * ==================================================
-     */
-    async update ({ rootGetters, dispatch }, { id, playlist }) {
-        // get the db
-        const db = rootGetters["db/get"];
-        // update the playlist
-        db.get("playlist.all").updateById(id, playlist).write();
 
-        dispatch("showSuccessNotification", "Playlist updated", { root: true });
+    async update ({ rootGetters }, { id, playlist }) {
+        const db = rootGetters["db/get"];
+        db.get("playlist.all").updateById(id, playlist).write();
     },
-    /**
-     * Delete method
-     * @param store
-     * @param id
-     * ==================================================
-     */
+
     async delete ({ dispatch, rootGetters }, id) {
         // get the db
         const db = rootGetters["db/get"];
@@ -61,28 +37,38 @@ const actions: ActionTree<PlayListState, RootState> = {
 
         dispatch("showSuccessNotification", "Playlist deleted", { root: true });
     },
-    async setPlaylist ({ rootGetters, dispatch, commit }, playlist: PlayList) {
-        // just set the interval if is more that 5 minutes
+
+    async setCurrentPlaylistId ({ rootGetters, commit }, playlistId) {
+        const db = rootGetters["db/get"];
+
+        db.set("history.lastPlaylistId", playlistId).write();
+
+        commit("SET_CURRENT_PLAYLIST_ID", playlistId);
+    },
+
+    async playPlaylist ({ rootGetters, dispatch, commit }, playlist: PlayList) {
         let IntervalTime = 300000;
+
         if (playlist.config.delay > IntervalTime) {
             IntervalTime = playlist.config.delay;
         }
-        // get the db
+
         const db = rootGetters["db/get"];
-        // set the current playlistId
-        db.set("history.lastPlaylistId", playlist.id).write();
-        // get id of last played wallpaper
+
+        dispatch("setCurrentPlaylistId", playlist.id);
+
         let wallpaperId = playlist.wallpaperIds[0];
-        // get the first wallpaper-id
+
         let lastWallpaperId = db.get("history.lastWallpaperId").value();
+
         if (playlist.wallpaperIds.includes(lastWallpaperId)) {
             wallpaperId = lastWallpaperId;
         }
-        // get the wallpaper using the id
-        let wallpaper = rootGetters["wallpaper/findById"](wallpaperId);
-        // set the firs wallpaper
-        dispatch("setDescktopWallpaper", wallpaper, { root: true });
-        // init count
+
+        let wallpaper = rootGetters["wallpaper/getById"](wallpaperId);
+
+        dispatch("wallpaper/playWallpaper", wallpaper, { root: true });
+
         let count = 0;
         // function to handle the cicles of wallpapers changes
         const loopToSetItenvals = () => {
@@ -102,9 +88,9 @@ const actions: ActionTree<PlayListState, RootState> = {
                 wallpaperId = playlist.wallpaperIds[0];
             }
             // get the wallpaper in db
-            wallpaper = rootGetters["wallpaper/findById"](wallpaperId);
+            wallpaper = rootGetters["wallpaper/getById"](wallpaperId);
             // set the wallpaper in descktop
-            dispatch("setDescktopWallpaper", wallpaper, { root: true });
+            dispatch("wallpaper/playWallpaper", wallpaper, { root: true });
         };
 
         // create a timer
@@ -112,12 +98,13 @@ const actions: ActionTree<PlayListState, RootState> = {
         // add the timer in the store state to be able to stop him
         commit("SET_TIMER", timer);
     },
-    async stopPlaylist ({ commit, rootGetters }) {
+    async stopPlaylist ({ commit, rootGetters, dispatch }) {
         commit("CLEAR_TIMER");
         // get the db
         const db = rootGetters["db/get"];
         // set the ids to empty
-        db.set("history.lastPlaylistId", null).write();
+        dispatch("setCurrentPlaylistId", null);
+
         db.set("history.lastWallpaperId", null).write();
     }
 };

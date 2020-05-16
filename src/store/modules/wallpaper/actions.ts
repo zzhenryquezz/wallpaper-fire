@@ -44,7 +44,7 @@ const actions: ActionTree<WallpaperState, RootState> = {
         }
 
         // get old wallpaper
-        const oldWallpaper: Wallpaper = JSON.parse(JSON.stringify(rootGetters["wallpaper/findById"](id)));
+        const oldWallpaper: Wallpaper = JSON.parse(JSON.stringify(rootGetters["wallpaper/getById"](id)));
 
         // if is a file directory
         if (wallpaper.thumb && !wallpaper.thumb.includes("file://")) {
@@ -82,7 +82,7 @@ const actions: ActionTree<WallpaperState, RootState> = {
             }
         });
         db.write();
-        const wallpaper: Wallpaper = rootGetters["wallpaper/findById"](id);
+        const wallpaper: Wallpaper = rootGetters["wallpaper/getById"](id);
         if (!wallpaper) {
             dispatch("showErrorNotification", "[WALLPAPER MODULE] can't find wallpaper", { root: true });
         }
@@ -111,6 +111,27 @@ const actions: ActionTree<WallpaperState, RootState> = {
                 dispatch("showErrorNotification", "[WALLPAPER MODULE] error when delete wallpaper thumb", { root: true });
             }
         });
+    },
+    playWallpaper ({ dispatch }, wallpaper: Wallpaper) {
+
+        const options = {
+            path: wallpaper.path,
+            wallpaper: wallpaper
+        };
+
+        dispatch("kde/setWallpaperVideo", options, { root: true });
+
+        dispatch("setCurrentWallpaperId", wallpaper.id);
+    },
+    stopWallpaper ({ dispatch }) {
+        dispatch("setCurrentWallpaperId", null);
+    },
+    setCurrentWallpaperId ({ rootGetters, commit }, wallpaperId: string | null) {
+        const db = rootGetters["db/get"];
+
+        db.set("history.lastWallpaperId", wallpaperId).write();
+
+        commit("SET_CURRENT_WALLPAPER_ID", wallpaperId);
     }
 };
 

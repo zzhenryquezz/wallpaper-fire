@@ -9,12 +9,12 @@ export type Wallpaper = {
     timestamp: number;
 };
 export type WallpaperState = {
-    current: Wallpaper | null;
+    currentWallpaperId: string | null;
     wallpapers: Wallpaper[];
 };
 
 const state: WallpaperState = {
-    current: null,
+    currentWallpaperId: null,
     wallpapers: []
 };
 

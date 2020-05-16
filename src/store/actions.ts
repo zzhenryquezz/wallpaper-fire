@@ -1,20 +1,7 @@
 import { RootState } from "@/store";
 import { ActionTree } from "vuex";
-import { Wallpaper } from "./modules/wallpaper/state";
-const actions: ActionTree<RootState, RootState> = {
 
-    setup ({ rootGetters, dispatch, commit }) {
-        const db = rootGetters["db/get"];
-        const history = db.get("history").value();
-        if (history.lastPlaylistId) {
-            const playlist = rootGetters["playlist/findById"](history.lastPlaylistId);
-            dispatch("playlist/setPlaylist", playlist);
-        } else if (history.lastWallpaperId) {
-            const wallpaper = rootGetters["wallpaper/findById"](history.lastWallpaperId);
-            dispatch("setDescktopWallpaper", wallpaper);
-            commit("wallpaper/SET_CURREMT_WALLPAPER", wallpaper, { root: true });
-        }
-    },
+const actions: ActionTree<RootState, RootState> = {
     showNotification ({ commit }, notification: any) {
         notification = { ...notification, show: true };
         commit("ADD_NOTIFICATION", notification);
@@ -79,26 +66,10 @@ const actions: ActionTree<RootState, RootState> = {
 
         dispatch("setUserNotifications");
     },
-    async setDescktopWallpaper ({ rootGetters, dispatch, commit }, wallpaper: Wallpaper) {
-        if (!wallpaper) {
-            dispatch("showErrorNotification", "Invalid wallpaper");
-        }
-
-        const options = {
-            path: wallpaper.path,
-            wallpaper: wallpaper
-        };
-
-        dispatch("kde/setWallpaperVideo", options, { root: true });
-
-        const db = rootGetters["db/get"];
-        db.set("history.lastWallpaperId", wallpaper.id).write();
-        commit("wallpaper/SET_CURREMT_WALLPAPER", wallpaper, { root: true });
-    },
-    async stopAllLiveWallpapers ({ dispatch, commit }) {
+    stopAllLiveWallpapers ({ dispatch }) {
         dispatch("kde/stopAll", {}, { root: true });
         dispatch("playlist/stopPlaylist", {}, { root: true });
-        commit("wallpaper/SET_CURREMT_WALLPAPER", null, { root: true });
+        dispatch("wallpaper/stopWallpaper", null, { root: true });
     }
 };
 

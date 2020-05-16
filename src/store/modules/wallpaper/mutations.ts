@@ -5,8 +5,8 @@ const mutations: MutationTree<WallpaperState> = {
     SET_WALLPAPERS (state, wallpapers) {
         state.wallpapers = wallpapers;
     },
-    SET_CURREMT_WALLPAPER (state, wallpaper) {
-        state.current = wallpaper;
+    SET_CURRENT_WALLPAPER_ID (state, wallpaperId: string | null) {
+        state.currentWallpaperId = wallpaperId;
     }
 };
 

@@ -1,16 +1,13 @@
 
 export type RootState = {
     [prop: string]: any;
+    loading: boolean;
     notifications: any[];
     app: {
         appPath: string;
         dataPath: string;
         thumbsPath: string;
         window: any;
-    };
-    history: {
-        lastWallpaperId: null | number;
-        lastPlaylistId: null | number;
     };
 }
 
