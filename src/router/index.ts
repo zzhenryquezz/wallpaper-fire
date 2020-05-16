@@ -22,7 +22,7 @@ const routes = [
     {
         path: "/playlist",
         name: "playlist",
-        component: () => import("./../views/wallpaper/WallpaperPlaylist.vue")
+        component: () => import("./../views/playlist/Playlist.vue")
     }
 ];
 
