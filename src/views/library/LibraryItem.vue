@@ -3,7 +3,8 @@
         <v-card
             link
             v-ripple='false'
-            class="library-item-card">
+            class="library-item-card"
+        >
             <v-hover v-if='wallpaper.thumb' v-slot:default="{ hover }">
                 <v-img
                     class="white--text align-end library-item-thumb"
@@ -12,14 +13,24 @@
                     @click="$emit('click')"
                     @contextmenu="showMenu"
                 >
+                    <template v-slot:placeholder>
+                        <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                        >
+                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                        </v-row>
+                    </template>
                     <v-expand-transition>
                         <div
+                            v-ripple
                             v-if="hover"
-                            @click.stop="useWallpaper"
+                            @click.stop="playWallpaper"
                             class="transition-fast-in-fast-out text-center py-3 subtitle-2 font-weight-bold text-uppercase"
                             style="height: 30%;background-color:rgba(0, 0, 0, 0.43)"
                         >
-                            use wallpaper
+                            <v-icon color="white">mdi-play</v-icon> play
                         </div>
                     </v-expand-transition>
                 </v-img>
@@ -84,8 +95,8 @@ export default defineComponent({
         const deleteWallpaper = () => {
             emit("delete", props.wallpaper);
         };
-        const useWallpaper = () => {
-            emit("use-wallpaper", props.wallpaper);
+        const playWallpaper = () => {
+            emit("play-wallpaper", props.wallpaper);
         };
         const state = reactive({
             defaultImage: require("@/assets/512x512.png"),
@@ -96,9 +107,9 @@ export default defineComponent({
             },
             options: [
                 {
-                    text: "Use Wallpapper",
+                    text: "Play Wallpapper",
                     class: "library-item-use-button",
-                    function: () => useWallpaper()
+                    function: () => playWallpaper()
                 },
                 {
                     text: "Edit Wallpapper",
@@ -131,7 +142,7 @@ export default defineComponent({
             showMenu,
             editWallpaper,
             deleteWallpaper,
-            useWallpaper
+            playWallpaper
         };
     }
 });

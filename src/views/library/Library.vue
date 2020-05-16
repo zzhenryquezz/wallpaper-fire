@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <v-row align="start">
             <template
                 v-for="wallpaper in state.wallpapers">
@@ -18,20 +17,14 @@
                         <library-item
                             v-show="!state.loading"
                             :wallpaper="wallpaper"
-                            @use-wallpaper="useWallpaper(wallpaper)"
-                            @click="selectWallpaper(wallpaper)"
+                            @play-wallpaper="playWallpaper(wallpaper)"
+                            @click="playWallpaper(wallpaper)"
                             @edit="editWallpaper"
                             @delete="handleDeleteWallpaper"
                         />
                     </v-col>
                 </v-slide-x-transition>
             </template>
-
-            <library-drawer
-                v-if="state.selected"
-                v-model="state.drawer"
-                :wallpaper="state.selected"
-            />
 
             <v-dialog v-model="state.dialog" max-width="1000">
                 <library-form
@@ -79,7 +72,7 @@ export default defineComponent({
     setup () {
         const store = useStore();
         const state: any = reactive({
-            loading: true,
+            loading: false,
             alert: false,
             dialog: false,
             drawer: false,
@@ -99,18 +92,17 @@ export default defineComponent({
         }
         const setLoading = () => {
             state.loading = true;
+            store.commit("SET_LOADING", true);
             setTimeout(() => {
                 state.loading = false;
+                store.commit("SET_LOADING", false);
             }, 800);
         };
         setLoading();
 
-        const useWallpaper = (wallpaper: Wallpaper) => {
-            store.dispatch("setDescktopWallpaper", wallpaper);
-        };
-        const selectWallpaper = (wallpaper: Wallpaper) => {
-            state.selected = wallpaper;
-            state.drawer = true;
+        const playWallpaper = (wallpaper: Wallpaper) => {
+            store.commit("playlist/SET_CURRENT_PLAYLIST_ID", null);
+            store.dispatch("wallpaper/playWallpaper", wallpaper);
         };
 
         const editWallpaper = (wallpaper: Wallpaper) => {
@@ -129,12 +121,11 @@ export default defineComponent({
 
         return {
             state,
-            selectWallpaper,
             editWallpaper,
             deleteWallpaper,
             setLoading,
             handleDeleteWallpaper,
-            useWallpaper
+            playWallpaper
         };
     }
 });
