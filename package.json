@@ -26,7 +26,6 @@
   "repository": "https://github.com/htron-dev/wallpaper-fire.git",
   "scripts": {
     "start": "npm run electron",
-    "dev": "export NODE_ENV=development && npm run build:app && npm run electron",
     "serve": "vue-cli-service serve",
     "electron": "electron . ",
     "lint:fix": "vue-cli-service lint --fix",

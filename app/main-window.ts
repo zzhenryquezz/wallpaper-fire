@@ -11,7 +11,7 @@ export default function createMainWindow () {
         webPreferences: {
             nodeIntegration: true,
             nodeIntegrationInWorker: true,
-            webSecurity: process.env.NODE_ENV !== "development"
+            webSecurity: process.env.NODE_ENV === "production"
         }
     });
 
@@ -47,7 +47,7 @@ export default function createMainWindow () {
     // get index file, is equivalne to the index.html in dist/ folder
     const indexHTML = path.resolve(__dirname, "../index.html");
     // if is development use server port
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV !== "production") {
         // load app in vue server
         mainWindow.loadURL("http://localhost:8080");
         // set development tools and menu buttons helpers
@@ -67,7 +67,6 @@ export default function createMainWindow () {
         ]);
         // insert menu
         Menu.setApplicationMenu(mainMenu);
-
     } else {
         // else use the static file
         mainWindow.loadURL(`file://${indexHTML}`);

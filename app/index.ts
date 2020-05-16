@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, ipcMain, Tray, MenuItem } from "electron";
+import { app, BrowserWindow, MenuItemConstructorOptions, MenuItem } from "electron";
 import { createTray } from "./services";
 import createMainWindow from "./main-window";
 
@@ -10,7 +10,7 @@ app.on("ready", () => {
 
 const mainMenuTemplate: MenuItemConstructorOptions[] = [];
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
     mainMenuTemplate.push(
         {
             label: "Developer tools",
