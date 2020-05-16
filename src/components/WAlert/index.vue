@@ -1,27 +1,30 @@
 <template>
     <v-dialog
-        max-width="450px"
+        max-width="300px"
         v-model="state.model">
-        <v-card >
+        <v-card class="py-4">
             <v-card-text class="text-center">
                 <v-icon
-                    size="200"
-                    color="warning"
+                    size="100"
+                    color="red"
                 >
                     mdi-alert
                 </v-icon>
-                <h3> Are you sure </h3>
+                <h3 class="title"> Are you sure ?</h3>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
                 <v-btn
                     color="success"
+                    class="mr-1"
+                    width="100"
                     @click="sendResponse('positive')"
                 >
                     Yes
                 </v-btn>
                 <v-btn
                     color="error"
+                    width="100"
                     @click="sendResponse('negative')"
                 >
                     No
