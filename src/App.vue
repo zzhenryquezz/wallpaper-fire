@@ -3,6 +3,7 @@
         <w-app-drawer />
         <w-app-bar />
         <v-content>
+            <v-progress-linear :indeterminate='state.loading' :color='state.loading ? "red" : "white"' />
             <v-container fluid>
                 <router-view v-if="state.ready" />
             </v-container>
@@ -28,12 +29,18 @@ import { provideStore, useStore } from "@/store/use-store";
 const ipcRenderer = window.require("electron").ipcRenderer;
 export default defineComponent({
     setup (props, { root }) {
-        const state = reactive({
-            ready: false
-        });
+
         provideStore(root.$store);
+
         const store = useStore();
+
+        const state = reactive({
+            ready: false,
+            loading: computed(() => store.state.loading)
+        });
+
         const notifications = computed<any[]>(() => store.state.notifications);
+
         const alerts = computed<any[]>(() => store.state.alerts);
         const load = async () => {
             const configPath = await ipcRenderer.invoke("setup-database");
