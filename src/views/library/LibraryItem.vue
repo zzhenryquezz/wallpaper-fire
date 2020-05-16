@@ -15,12 +15,11 @@
                     <v-expand-transition>
                         <div
                             v-if="hover"
-                            class="transition-fast-in-fast-out text-center white--text py-4"
-                            style="height: 30%;background-color:rgba(33,33,33,0.4)"
+                            @click.stop="useWallpaper"
+                            class="transition-fast-in-fast-out text-center py-3 subtitle-2 font-weight-bold text-uppercase"
+                            style="height: 30%;background-color:rgba(0, 0, 0, 0.43)"
                         >
-                            <v-btn
-                                @click.stop="useWallpaper"
-                                color="success" dark small>use wallpaper</v-btn>
+                            use wallpaper
                         </div>
                     </v-expand-transition>
                 </v-img>

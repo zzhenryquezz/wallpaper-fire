@@ -7,7 +7,7 @@ const routes = [
     {
         path: "/",
         name: "home",
-        redirect: "/wallpaper"
+        redirect: "/library"
     },
     {
         path: "/settings",
@@ -17,7 +17,7 @@ const routes = [
     {
         path: "/library",
         name: "library",
-        component: () => import("./../views/wallpaper/library/Library.vue")
+        component: () => import("./../views/library/Library.vue")
     },
     {
         path: "/playlist",

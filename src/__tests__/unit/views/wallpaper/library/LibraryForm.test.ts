@@ -5,7 +5,7 @@ import sinon from "sinon";
 import Vuetify from "vuetify";
 // function
 import * as useStore from "@/store/use-store";
-import * as compostionFunctions from "@/views/wallpaper/library/functions";
+import * as compostionFunctions from "@/views/library/functions";
 // component
 import LibraryForm from "@/views/wallpaper/library/LibraryForm.vue";
 import WThumbnailPicker from "@/components/WThumbnailPicker/index.vue";

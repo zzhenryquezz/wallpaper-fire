@@ -6,6 +6,11 @@
         temporary
         v-model="state.model">
         <v-card flat>
+            <v-card-title>
+                <v-btn @click="state.model = false" icon>
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </v-card-title>
             <v-card-text>
                 <video
                     :src="wallpaper.path"
